@@ -1,10 +1,9 @@
-package Models;
+package br.edu.up.Models;
 
 public class Carteira {
     private    double debito = 0, credito = 0;
     private    String nome, cpf;
     private    int id;
-
 
     
     public double getDebito() {
