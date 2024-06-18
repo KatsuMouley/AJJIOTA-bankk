@@ -1,6 +1,5 @@
-import br.edu.up.Models.Carteira;
-public class Programa {
-    public static void main(String[] args) throws Exception {
-
-    }
+import br.edu.up.telas.*;
+public void main(String[] args) throws Exception {
+    Menu menu = new Menu();
+    menu.run();
 }

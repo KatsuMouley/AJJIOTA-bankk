@@ -10,8 +10,8 @@ public class Boleto extends Carteira{
 
     
 
-    public Boleto(String numero, double valor, LocalDate dataVencimento, boolean pago, double debito, double credito, String nome, String cpf, int id) {
-        super(nome, cpf, id);
+    public Boleto(String numero, double valor, LocalDate dataVencimento, boolean pago, double debito, double credito, String nome, String cpf, int id, String senha, String email) {
+        super(nome, cpf, email, senha, id);
         this.numero = numero;
         this.valor = valor;
         this.dataVencimento = dataVencimento;

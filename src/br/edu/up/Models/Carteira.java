@@ -2,7 +2,7 @@ package br.edu.up.Models;
 
 public class Carteira {
     private    double debito = 0, credito = 0;
-    private    String nome, cpf;
+    private    String nome, cpf, emai, senha;
     private    int id;
 
     
@@ -66,10 +66,20 @@ public class Carteira {
 
 
 
-    public Carteira(String nome, String cpf, int id){
-        this.setNome(nome);
-        this.setCpf(cpf);
-        this.setId(id);
+    
+
+
+
+    
+
+
+
+    public Carteira(String nome, String cpf, String emai, String senha, int id) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.emai = emai;
+        this.senha = senha;
+        this.id = id;
     }
 
 
@@ -77,6 +87,30 @@ public class Carteira {
     @Override
     public String toString() {
         return "------------------------\nCarteira \nSaldo debito: " +String.format("%.2f",  debito) + " | saldo credito: " + String.format("%.2f",  credito) + "\nnome: " + nome + ", cpf: " + cpf + ", id: " + id+ "\n------------------------";
+    }
+
+
+
+    public String getEmai() {
+        return emai;
+    }
+
+
+
+    public void setEmai(String emai) {
+        this.emai = emai;
+    }
+
+
+
+    public String getSenha() {
+        return senha;
+    }
+
+
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
 
