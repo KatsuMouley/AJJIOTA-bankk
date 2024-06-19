@@ -10,13 +10,9 @@ public class Carteira {
         return debito;
     }
 
-
-
     public void setDebito(double debito) {
         this.debito = debito;
     }
-
-
 
     public double getCredito() {
         return credito;
@@ -63,15 +59,6 @@ public class Carteira {
     public void setId(int id) {
         this.id = id;
     }
-
-
-
-    
-
-
-
-    
-
 
 
     public Carteira(String nome, String cpf, String emai, String senha, int id) {
