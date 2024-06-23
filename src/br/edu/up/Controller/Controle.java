@@ -24,6 +24,14 @@ public class Controle {
         }
     }
     
+    public ArrayList<User> getCarteiras() {
+        return carteiras;
+    }
+
+    public void setCarteiras(ArrayList<User> carteiras) {
+        this.carteiras = carteiras;
+    }
+
     @Override
     public String toString()
     {
