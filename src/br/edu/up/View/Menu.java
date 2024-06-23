@@ -1,12 +1,9 @@
 package br.edu.up.View;
 
 import br.edu.up.Controller.Controle;
-import br.edu.up.Models.Boleto;
-import br.edu.up.Models.Carteira;
-import br.edu.up.Models.User;
-// import br.edu.up.Files.*;
-// import br.edu.up.Models.*;
-// import br.edu.up.util.Prompt;
+import br.edu.up.Models.*;
+import br.edu.up.util.*;
+//import br.edu.up.Files.*;
 
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -28,7 +25,6 @@ public class Menu {
         System.out.println("---------------------------------------------------");
         System.out.println("|1) Listar Usuários                               |");
         System.out.println("|2) Fazer um novo cadastro                        |");
-        System.out.println("|3) entrar na conta");
         System.out.println("|4) sair                                          |");
         System.out.println("---------------------------------------------------");
         int value = input.nextInt();
@@ -48,9 +44,6 @@ public class Menu {
                 cadastrar();
                 break;
             case 3:
-                acessarCarteira();
-                break;
-            case 4:
                 System.out.println("");
                 break;
             default:
@@ -71,7 +64,7 @@ public class Menu {
         input.nextLine();
         switch (value) {
             case 1:
-
+                acessarCarteira();
                 break;
             case 2:
                 deletarCarteira();
@@ -108,11 +101,10 @@ public class Menu {
     }
 
     public void acessarCarteira() {
-        System.out.println("boleto");
-        Boleto boleto = new Boleto();
-        boleto.run();
-
-
+        System.out.println("Degite o id do usuário que deseja selecionar");
+        int id = input.nextInt();
+        input.nextLine();
+        opcoesCarteira(id);
     }
 
     public void deletarCarteira() {
@@ -121,5 +113,35 @@ public class Menu {
         input.nextLine();
         control.removeUser(id);
         firstOptions();
+    }
+
+    public void opcoesCarteira(int id){
+        
+        System.out.println("\n");
+        System.out.println(control.getCarteiras().get(id).toString());
+        System.out.println("---------------------------------------------------");
+        System.out.println("|1) Visualizar Histórico de transações            |");
+        System.out.println("|2) Realizar Pix                                  |");
+        System.out.println("|3) Realizar Empréstimo                           |");
+        System.out.println("|4) Fazer boleto                                  |");
+        System.out.println("---------------------------------------------------");
+        int opcoes = input.nextInt();
+        switch (opcoes) {
+            case 1:
+            System.out.println("Opção indisponível no momento");
+                break;
+            case 2:
+            System.out.println("Opção indisponível no momento");
+                break;
+            case 3:
+            System.out.println("Opção indisponível no momento");
+                break;
+            case 4:
+            System.out.println("Opção indisponível no momento");
+                break;
+        
+            default:
+                break;
+        }
     }
 }
