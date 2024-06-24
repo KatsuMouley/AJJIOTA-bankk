@@ -6,6 +6,7 @@ import br.edu.up.util.*;
 //import br.edu.up.Files.*;
 
 import java.util.Scanner;
+import java.net.IDN;
 import java.util.ArrayList;
 
 // import java.io.File;
@@ -16,6 +17,9 @@ public class Menu {
     Scanner input = new Scanner(System.in);
     Controle control = new Controle();
     ArrayList<User> carteira = control.getCarteiras();
+
+    int id = 0;
+    String name, cpf;
 
     public Menu() {
         firstOptions();
@@ -104,7 +108,7 @@ public class Menu {
         System.out.println("Degite o id do usuário que deseja selecionar");
         int id = input.nextInt();
         input.nextLine();
-        opcoesCarteira(id);
+        opcoesCarteira(id - 1);
     }
 
     public void deletarCarteira() {
@@ -115,31 +119,85 @@ public class Menu {
         firstOptions();
     }
 
-    public void opcoesCarteira(int id){
-        
+    public void opcoesCarteira(int id) {
+
         System.out.println("\n");
         System.out.println(control.getCarteiras().get(id).toString());
+        System.out.println(control.getCarteiras().get(id));
+        this.id = id + 1;
+        for (User user : carteira) {
+            if (user.getId() == this.id) {
+                this.name = user.getName();
+                this.cpf = user.getCpf();
+            }
+        }
         System.out.println("---------------------------------------------------");
         System.out.println("|1) Visualizar Histórico de transações            |");
         System.out.println("|2) Realizar Pix                                  |");
         System.out.println("|3) Realizar Empréstimo                           |");
         System.out.println("|4) Fazer boleto                                  |");
+        System.out.println("|5) ver crtiptoMoeda                              |");
         System.out.println("---------------------------------------------------");
         int opcoes = input.nextInt();
         switch (opcoes) {
             case 1:
-            System.out.println("Opção indisponível no momento");
+                System.out.println("Opção indisponível no momento");
                 break;
             case 2:
-            System.out.println("Opção indisponível no momento");
+
                 break;
             case 3:
-            System.out.println("Opção indisponível no momento");
+
                 break;
             case 4:
-            System.out.println("Opção indisponível no momento");
+                System.out.println("qual conta voce quer pagar ? total 3");
+                Scanner scan = new Scanner(System.in);
+                int res = scan.nextInt();
+                switch (res) {
+                    case 1:
+                        double valor1 = 1200;
+                        double valor2 = 1500;
+                        double valor3 = 8200;
+                        System.out.println("------------------------------------");
+                        System.out.println("nome do pagador " + this.name + "data de vencimento " + "12/05/2024");
+                        System.out.println("valor do boleto = " + valor1);
+                        System.out.println("------------------------------------");
+                        System.out.println("pagar debito digite 1");
+                        System.out.println("pagar credito digite 2");
+                        int ress = scan.nextInt();
+                        switch (ress) {
+                            case 1:
+                            for (User user : carteira) {
+                                if (user.getId() == this.id) {
+                                    if () {
+                                        
+                                    }
+                                }
+                            }
+                                break;
+                            case 2:
+
+                                break;
+
+                            default:
+                                break;
+                        }
+                        break;
+                    case 2:
+
+                        break;
+                    case 3:
+
+                        break;
+                    default:
+                        break;
+                }
+
                 break;
-        
+            case 5:
+
+                break;
+
             default:
                 break;
         }
