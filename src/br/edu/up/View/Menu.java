@@ -150,56 +150,85 @@ public class Menu {
 
                 break;
             case 4:
-                System.out.println("qual conta voce quer pagar ? total 3");
-                Scanner scan = new Scanner(System.in);
-                int res = scan.nextInt();
-                switch (res) {
+                System.out.println("Qual conta você deseja pagar?");
+                System.out.println("1) Conta 1 - R$1200");
+                System.out.println("2) Conta 2 - R$1500");
+                System.out.println("3) Conta 3 - R$8200");
+                int escolhaConta = input.nextInt();
+                input.nextLine();
+                double valorConta = 0; 
+
+                switch (escolhaConta) {
                     case 1:
-                        double valor1 = 1200;
-                        double valor2 = 1500;
-                        double valor3 = 8200;
-                        System.out.println("------------------------------------");
-                        System.out.println("nome do pagador " + this.name + "data de vencimento " + "12/05/2024");
-                        System.out.println("valor do boleto = " + valor1);
-                        System.out.println("------------------------------------");
-                        System.out.println("pagar debito digite 1");
-                        System.out.println("pagar credito digite 2");
-                        int ress = scan.nextInt();
-                        switch (ress) {
-                            case 1:
-                            for (User user : carteira) {
-                                if (user.getId() == this.id) {
-                                    if () {
-                                        
+                        valorConta = 1200;
+                        break;
+                    case 2:
+                        valorConta = 1500;
+                        break;
+                    case 3:
+                        valorConta = 8200;
+                        break;
+                    default:
+                        System.out.println("Opção inválida.");
+                        return; 
+                }
+
+                System.out.println("------------------------------------");
+                System.out.println("Nome do pagador: " + this.name);
+                System.out.println("Data de vencimento: 12/05/2024");
+                System.out.println("Valor do boleto: R$" + valorConta);
+                System.out.println("------------------------------------");
+                System.out.println("Pagar débito digite 1");
+                System.out.println("Pagar crédito digite 2");
+
+                int ress = input.nextInt();
+                input.nextLine();
+
+                switch (ress) {
+                    case 1:
+                        for (User user : carteira) {
+                            if (user.getId() == this.id) {
+                                if (user instanceof Carteira) {
+                                    Carteira carteiraUsuario = (Carteira) user;
+                                    double saldoDisponivel = carteiraUsuario.getSaldoDebito();
+                                    double saldoCreditoUtilizado = carteiraUsuario.getSaldoCredito();
+
+                                    if (saldoDisponivel >= valorConta) {
+                                        carteiraUsuario.setSaldoDebito(saldoDisponivel - valorConta);
+                                        System.out.println("Pagamento efetuado com sucesso via débito.");
+                                    } else {
+                                        double restante = valorConta - saldoDisponivel;
+                                        carteiraUsuario.setSaldoDebito(0);
+                                        if (saldoCreditoUtilizado >= restante) {
+                                            carteiraUsuario.setSaldoCredito(saldoCreditoUtilizado - restante);
+                                            System.out.println("Pagamento efetuado com sucesso utilizando crédito.");
+                                        } else {
+                                            System.out.println("Saldo insuficiente para pagar esta conta.");
+                                        }
                                     }
                                 }
                             }
-                                break;
-                            case 2:
-
-                                break;
-
-                            default:
-                                break;
                         }
                         break;
                     case 2:
+                        for (User user : carteira) {
+                            if (user.getId() == this.id) {
+                                if (user instanceof Carteira) {
+                                    Carteira carteiraUsuario = (Carteira) user;
+                                    double saldoCreditoUtilizado = carteiraUsuario.getSaldoCredito();
 
-                        break;
-                    case 3:
-
+                                    if (saldoCreditoUtilizado >= valorConta) {
+                                        carteiraUsuario.setSaldoCredito(saldoCreditoUtilizado - valorConta);
+                                        System.out.println("Pagamento efetuado com sucesso utilizando crédito.");
+                                    } else {
+                                        System.out.println("Saldo insuficiente para pagar esta conta.");
+                                    }
+                                }
+                            }
+                        }
                         break;
                     default:
-                        break;
                 }
-
-                break;
-            case 5:
-
-                break;
-
-            default:
-                break;
         }
     }
 }
