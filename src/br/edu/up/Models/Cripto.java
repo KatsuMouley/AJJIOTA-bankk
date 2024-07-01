@@ -2,7 +2,6 @@ package br.edu.up.Models;
 
 public class Cripto{
 
-    private Carteira carteira;
 
     //--------------------- saldo de cripto
     private double saldoEthereum = 0;
@@ -19,27 +18,20 @@ public class Cripto{
     // compra de criptos
     public void comprarCripto(String nomeCripto, double valor) {
         double taxa = obterTaxa(nomeCripto);
-        double valorComTaxa = valor * (1 + taxa);
-
-        if (carteira.getSaldoDebito() >= valorComTaxa) {
-            carteira.addToSaldoDebito(-valorComTaxa);
-            adicionarSaldoCripto(nomeCripto, valor);
-        }
+        double valorComTaxa = valor / taxa;
+        adicionarSaldoCripto(nomeCripto, valorComTaxa);
+        
     }
 
     // venda de criptos
     public void venderCripto(String nomeCripto, double valor) {
         double taxa = obterTaxa(nomeCripto);
-        double valorComTaxa = valor * (1 - taxa);
-
-        if (verSaldoCripto(nomeCripto) >= valor) {
-            carteira.addToSaldoDebito(valorComTaxa);
-            removerSaldoCripto(nomeCripto, valor);
-        }
+        double valorComTaxa = valor;
+        removerSaldoCripto(nomeCripto, valorComTaxa);
     }
 
     // visualizar taxa de criptos
-    private double obterTaxa(String nomeCripto) {
+    public double obterTaxa(String nomeCripto) {
         switch (nomeCripto) {
             case "Ethereum":
                 return taxaEthereum;
@@ -53,7 +45,7 @@ public class Cripto{
     }
 
     // aumentar saldo de cripto
-    private void adicionarSaldoCripto(String nomeCripto, double valor) {
+    public void adicionarSaldoCripto(String nomeCripto, double valor) {
         switch (nomeCripto) {
             case "Ethereum":
                 saldoEthereum += valor;
@@ -68,7 +60,7 @@ public class Cripto{
     }
 
     // diminuir saldo de cripto
-    private void removerSaldoCripto(String nomeCripto, double valor) {
+    public void removerSaldoCripto(String nomeCripto, double valor) {
         switch (nomeCripto) {
             case "Ethereum":
                 saldoEthereum -= valor;
@@ -86,7 +78,7 @@ public class Cripto{
     public double verSaldoCripto(String nomeCripto) {
         switch (nomeCripto) {
             case "Ethereum":
-                return saldoEthereum;
+                return saldoEthereum ;
             case "Bitcoin":
                 return saldoBitcoin;
             case "Ajjicoin":

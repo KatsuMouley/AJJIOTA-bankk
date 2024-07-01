@@ -51,5 +51,7 @@ public abstract class User  {
     public abstract void addToLimiteCredito(double limiteCredito);
     public abstract String listTransacoes();
     public abstract void subToLimiteCredito(double limiteCredito);
+    public abstract Cripto getCriptobank();
+    public abstract void setCriptobank(Cripto cripto);
     
 }

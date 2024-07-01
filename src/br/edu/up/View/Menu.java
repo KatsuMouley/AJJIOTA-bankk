@@ -6,7 +6,6 @@ import br.edu.up.util.*;
 //import br.edu.up.Files.*;
 
 import java.util.Scanner;
-import java.net.IDN;
 import java.util.ArrayList;
 
 // import java.io.File;
@@ -54,6 +53,7 @@ public class Menu {
                 break;
             default:
                 System.out.println("This option is not available, restarting the program");
+                utilities.pressionarEnter();
                 firstOptions();
                 break;
         }
@@ -82,6 +82,7 @@ public class Menu {
                 break;
             default:
             System.out.println("This option is not available, restarting the program");
+            utilities.pressionarEnter();
             firstOptions();
                 break;
         }
@@ -140,8 +141,8 @@ public class Menu {
         System.out.println("|1) Visualizar Histórico de transações            |");
         System.out.println("|2) Realizar uma transação                        |");
         System.out.println("|3) Cripto Bank                                   |");
-        System.out.println("|4) Emprestimo                                    |");
-        System.out.println("|5) voltar                                        |");
+        // System.out.println("|*) Emprestimo                                    |");
+        System.out.println("|4) voltar                                        |");
         System.out.println("---------------------------------------------------");
         int opcoes = input.nextInt();
         input.nextLine();
@@ -153,16 +154,14 @@ public class Menu {
                 transacao();
                 break;
             case 3:
-                System.out.println("Opção indisponível no momento");
+                CriptoBank();
                 break;
             case 4:
-                System.out.println("Opção indisponível no momento");
-                break;
-            case 5:
                 firstOptions();
                 break;
             default:
                 System.out.println("This option is not available, restarting the program");
+                utilities.pressionarEnter();
                 firstOptions();
                 break;
         }
@@ -175,7 +174,7 @@ public class Menu {
         int escolhaConta = input.nextInt();
         input.nextLine();
         System.out.println("Quanto você deseja pagar para "+control.getCarteiras().get(escolhaConta-1).getName()+"?");
-        double valor = input.nextInt();
+        double valor = input.nextDouble();
         input.nextLine();
         Transacao transacao = new Transacao(this.id, escolhaConta, valor);
         double creditoRestante = control.getCarteiras().get(escolhaConta-1).getLimiteCredito() + control.getCarteiras().get(escolhaConta-1).getSaldoCredito();
@@ -216,6 +215,7 @@ public class Menu {
                     break;
                 default:
                     System.out.println("This option is not available");
+                    utilities.pressionarEnter();
                     opcoesCarteira(this.id);
                     break;
             }
@@ -246,6 +246,7 @@ public class Menu {
                         break;
                     default:
                         System.out.println("This option is not available");
+                        utilities.pressionarEnter();
                         opcoesCarteira(this.id);
                         break;
                 }
@@ -267,5 +268,126 @@ public class Menu {
         opcoesCarteira(this.id);
     }
 
-    public void CriptoBank(){}
+    public void CriptoBank(){
+        utilities.limparConsole();
+        System.out.println("CRIPTO BANK");
+        System.out.println("---------------------------------------------------");
+        System.out.println("|1) Listar moedas                                 |");
+        System.out.println("|2) Voltar                                        |");
+        System.out.println("---------------------------------------------------");
+        
+        int opcoes = input.nextInt();
+        input.nextLine();
+        switch (opcoes) {
+            case 1:
+                ListarCriptos();
+                break;
+            case 2:
+                opcoesCarteira(this.id);
+                break;
+            default:
+                System.out.println("This option is not available");
+                utilities.pressionarEnter();
+                CriptoBank();
+                break;
+        }
+    }
+
+    public void ListarCriptos(){
+        utilities.limparConsole();
+        System.out.println("---------------------------------------------------");
+        System.out.println("1| Ethereum | valor: $"+control.getCarteiras().get(this.id).getCriptobank().obterTaxa("Ethereum")+" | Saldo: "+ control.getCarteiras().get(this.id).getCriptobank().verSaldoCripto("Ethereum"));
+        System.out.println("2| Bitcoin  | valor: $"+control.getCarteiras().get(this.id).getCriptobank().obterTaxa("Bitcoin")+" | Saldo: "+ control.getCarteiras().get(this.id).getCriptobank().verSaldoCripto("Bitcoin"));
+        System.out.println("3| Ajjicoin | valor: $"+control.getCarteiras().get(this.id).getCriptobank().obterTaxa("Ajjicoin")+" | Saldo: "+ control.getCarteiras().get(this.id).getCriptobank().verSaldoCripto("Ajjicoin"));
+        System.out.println("---------------------------------------------------");
+        System.out.println("|1) Investir                                      |");
+        System.out.println("|2) Vender                                        |");
+        System.out.println("|3) Voltar                                        |");
+        System.out.println("---------------------------------------------------");
+        int opcoes = input.nextInt();
+        input.nextLine();
+        switch (opcoes) {
+            case 1:
+                investirCripto();
+                break;
+            case 2:
+                venderCripto();
+                break;
+            case 3:
+                opcoesCarteira(this.id);
+                break;
+            default:
+                System.out.println("This option is not available");
+                utilities.pressionarEnter();
+                CriptoBank();
+                break;
+        }
+    }
+
+    public void investirCripto(){
+        System.out.println("Qual a moeda que você deseja Investir?");
+        int id = input.nextInt();
+        input.nextLine();
+        System.out.println("Qual o valor que você deseja Investir?");
+        double value = input.nextDouble();
+        input.nextLine();
+        switch (id) {
+            case 1:
+            control.getCarteiras().get(this.id).getCriptobank().comprarCripto("Ethereum", value);
+            control.getCarteiras().get(this.id - 1).subToSaldoDebito(value);
+                break;
+            case 2:
+            control.getCarteiras().get(this.id).getCriptobank().comprarCripto("Bitcoin", value);
+            control.getCarteiras().get(this.id - 1).subToSaldoDebito(value);
+                break;
+            case 3:
+            control.getCarteiras().get(this.id).getCriptobank().comprarCripto("Ajjicoin", value);
+            control.getCarteiras().get(this.id - 1).subToSaldoDebito(value);
+                break;
+        
+            default:
+            System.out.println("This option is not available");
+            utilities.pressionarEnter();
+            CriptoBank();
+                break;
+        }
+        ListarCriptos();
+    }
+
+    public void venderCripto(){
+        String nome = "";
+        System.out.println("Qual a moeda que você deseja vender?");
+        int id = input.nextInt();
+        input.nextLine();
+        System.out.println("Quanto você deseja retirar desta moeda??");
+        double value = input.nextDouble();
+        input.nextLine();
+        switch (id) {
+            case 1:
+            nome = "Ethereum";
+                break;
+            case 2:
+            nome = "Bitcoin";
+                break;
+            case 3:
+            nome = "Ajjicoin";
+                break;
+            default:
+            System.out.println("This option is not available");
+            utilities.pressionarEnter();
+            CriptoBank();
+                break;
+        }
+        double Saldo = control.getCarteiras().get(this.id).getCriptobank().verSaldoCripto(nome);
+        if ( Saldo < value) {
+            System.out.println("Você não possui esta quantia de dinheiro em "+name+"s");
+            utilities.pressionarEnter();
+        } else {
+            control.getCarteiras().get(this.id).getCriptobank().venderCripto(nome, value);
+            control.getCarteiras().get(this.id - 1).addToSaldoDebito(value * control.getCarteiras().get(this.id).getCriptobank().obterTaxa(nome));
+
+        }
+        ListarCriptos();
+
+    }
 }

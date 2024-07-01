@@ -7,14 +7,20 @@ public class Carteira extends User {
 
     private ArrayList<Transacao> transacoes = new ArrayList<>();//histórico de transações
 
+    private Cripto criptobank = new Cripto();
+
     //User sem saldo nenhum 
     public Carteira(int id, String name, String cpf) {
         super(id, name, cpf);
+        Cripto cripto = new Cripto();
+        setCriptobank(cripto);
     }
     //User com algum saldo
     public Carteira(int id, String name, String cpf, double SaldoDebito) {
         super(id, name, cpf);
         this.setSaldoDebito(SaldoDebito);
+        Cripto cripto = new Cripto();
+        setCriptobank(cripto);
     }
 
     @Override
@@ -95,6 +101,15 @@ public class Carteira extends User {
     public String toString() {
         // TODO Auto-generated method stub
         return super.toString() + " Saldo: R$"+getSaldoDebito()+"| Crédito: "+(getLimiteCredito()+getSaldoCredito() + "| Limite de crédito: " + getLimiteCredito() + "| Pendência de crédito: " + getSaldoCredito());
+    }
+
+    @Override
+    public Cripto getCriptobank() {
+        return criptobank;
+    }
+    @Override
+    public void setCriptobank(Cripto criptobank) {
+        this.criptobank = criptobank;
     }
 
     
