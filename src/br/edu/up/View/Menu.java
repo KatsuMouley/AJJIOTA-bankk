@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class Menu {
     Scanner input = new Scanner(System.in);
     Controle control = new Controle();
+    Prompt utilities = new Prompt();
     ArrayList<User> carteira = control.getCarteiras();
 
     int id = 0;
@@ -26,10 +27,11 @@ public class Menu {
     }
 
     public void firstOptions() {
+        utilities.limparConsole();
         System.out.println("---------------------------------------------------");
         System.out.println("|1) Listar Usuários                               |");
         System.out.println("|2) Fazer um novo cadastro                        |");
-        System.out.println("|4) sair                                          |");
+        System.out.println("|3) sair                                          |");
         System.out.println("---------------------------------------------------");
         int value = input.nextInt();
         input.nextLine();
@@ -51,12 +53,14 @@ public class Menu {
                 System.out.println("");
                 break;
             default:
-                System.out.println("This Option is not avalaible, Exiting the program...");
+                System.out.println("This option is not available, restarting the program");
+                firstOptions();
                 break;
         }
     }
 
     public void listUsers() {
+        utilities.limparConsole();
         System.out.println(control.toString());
         System.out.println("\n");
         System.out.println("---------------------------------------------------");
@@ -77,13 +81,15 @@ public class Menu {
                 firstOptions();
                 break;
             default:
-                System.out.println("This Option is not avalaible, Exiting the program...");
+            System.out.println("This option is not available, restarting the program");
+            firstOptions();
                 break;
         }
 
     }
 
     public void cadastrar() {
+        utilities.limparConsole();
         System.out.println("---------------------------------------------------");
         System.out.println("| Qual o nome do usuário?                         |");
         String name = input.nextLine();
@@ -108,7 +114,7 @@ public class Menu {
         System.out.println("Degite o id do usuário que deseja selecionar");
         int id = input.nextInt();
         input.nextLine();
-        opcoesCarteira(id - 1);
+        opcoesCarteira(id);
     }
 
     public void deletarCarteira() {
@@ -120,115 +126,146 @@ public class Menu {
     }
 
     public void opcoesCarteira(int id) {
-
+        utilities.limparConsole();
         System.out.println("\n");
-        System.out.println(control.getCarteiras().get(id).toString());
-        System.out.println(control.getCarteiras().get(id));
-        this.id = id + 1;
+        System.out.println(control.getCarteiras().get(id-1).toString());
+        this.id = id;
         for (User user : carteira) {
-            if (user.getId() == this.id) {
+            if (user.getId() == this.id-1) {
                 this.name = user.getName();
                 this.cpf = user.getCpf();
             }
         }
         System.out.println("---------------------------------------------------");
         System.out.println("|1) Visualizar Histórico de transações            |");
-        System.out.println("|2) Realizar Pix                                  |");
-        System.out.println("|3) Realizar Empréstimo                           |");
-        System.out.println("|4) Fazer boleto                                  |");
-        System.out.println("|5) ver crtiptoMoeda                              |");
+        System.out.println("|2) Realizar uma transação                        |");
+        System.out.println("|3) Cripto Bank                                   |");
+        System.out.println("|4) Emprestimo                                    |");
+        System.out.println("|5) voltar                                        |");
         System.out.println("---------------------------------------------------");
         int opcoes = input.nextInt();
+        input.nextLine();
         switch (opcoes) {
             case 1:
-                System.out.println("Opção indisponível no momento");
+                verHistorico();
                 break;
             case 2:
-
+                transacao();
                 break;
             case 3:
-
+                System.out.println("Opção indisponível no momento");
                 break;
             case 4:
-                System.out.println("Qual conta você deseja pagar?");
-                System.out.println("1) Conta 1 - R$1200");
-                System.out.println("2) Conta 2 - R$1500");
-                System.out.println("3) Conta 3 - R$8200");
-                int escolhaConta = input.nextInt();
-                input.nextLine();
-                double valorConta = 0; 
+                System.out.println("Opção indisponível no momento");
+                break;
+            case 5:
+                firstOptions();
+                break;
+            default:
+                System.out.println("This option is not available, restarting the program");
+                firstOptions();
+                break;
+        }
+    }
 
-                switch (escolhaConta) {
-                    case 1:
-                        valorConta = 1200;
-                        break;
-                    case 2:
-                        valorConta = 1500;
-                        break;
-                    case 3:
-                        valorConta = 8200;
-                        break;
-                    default:
-                        System.out.println("Opção inválida.");
-                        return; 
-                }
+    public void transacao(){
+        utilities.limparConsole();
+        System.out.println(control.toString());//Da um print na lista de usuários
+        System.out.println("Qual conta você deseja pagar?");
+        int escolhaConta = input.nextInt();
+        input.nextLine();
+        System.out.println("Quanto você deseja pagar para "+control.getCarteiras().get(escolhaConta-1).getName()+"?");
+        double valor = input.nextInt();
+        input.nextLine();
+        Transacao transacao = new Transacao(this.id, escolhaConta, valor);
+        double creditoRestante = control.getCarteiras().get(escolhaConta-1).getLimiteCredito() + control.getCarteiras().get(escolhaConta-1).getSaldoCredito();
 
+        if (escolhaConta != this.id) {
+            System.out.println("------------------------------------");
+            System.out.println("Nome do pagador: " + this.name);
+            System.out.println("Nome do recebedor: " + control.getCarteiras().get(escolhaConta-1).getName());
+            System.out.println("valor: " + valor);
+            System.out.println("------------------------------------");
+            System.out.println("1) Pagar débito");
+            System.out.println("2) Pagar crédito");
+            System.out.println("3) voltar");
+            int ress = input.nextInt();
+            input.nextLine();
+
+            switch (ress) {
+                case 1:
+                    if (control.getCarteiras().get(this.id - 1).getSaldoDebito() - valor <= 0) {
+                        System.out.println("Você não tem Debito o suficiente para realizar esta operação");
+                    } else {
+                        control.getCarteiras().get(this.id - 1).subToSaldoDebito(valor);
+                        control.getCarteiras().get(escolhaConta - 1).addToSaldoDebito(valor);
+                        transacao.setMessage("O usuário " + control.getCarteiras().get(this.id- 1).getName() + " efetuou uma transação de $" + valor + " em debito para o usuário "+ control.getCarteiras().get(escolhaConta- 1).getName() + "\n");
+                    }
+                    break;
+                case 2:
+                    if (creditoRestante - valor <= 0) {
+                        System.out.println("Você não tem crédito o suficiente para realizar esta operação");
+                    } else {
+                        control.getCarteiras().get(this.id - 1).subToSaldoCredito(valor);
+                        control.getCarteiras().get(escolhaConta - 1).addToSaldoDebito(valor);
+                        transacao.setMessage("O usuário " + control.getCarteiras().get(this.id- 1).getName() + " efetuou uma transação de $" + valor + " em crédito para o usuário "+ control.getCarteiras().get(escolhaConta- 1).getName() + "\n");
+                    }
+                    break;
+                case 3:
+                    opcoesCarteira(this.id);
+                    break;
+                default:
+                    System.out.println("This option is not available");
+                    opcoesCarteira(this.id);
+                    break;
+            }
+        } else {
+            if ( creditoRestante != control.getCarteiras().get(escolhaConta-1).getLimiteCredito()) {
                 System.out.println("------------------------------------");
-                System.out.println("Nome do pagador: " + this.name);
-                System.out.println("Data de vencimento: 12/05/2024");
-                System.out.println("Valor do boleto: R$" + valorConta);
+                System.out.println("O usuário tem uma pendência de $"+ control.getCarteiras().get(escolhaConta-1).getSaldoCredito()+ " créditos, você deseja pagar essa pendência?");
                 System.out.println("------------------------------------");
-                System.out.println("Pagar débito digite 1");
-                System.out.println("Pagar crédito digite 2");
-
+                System.out.println("1) Pagar débito");
+                System.out.println("2) voltar");
+                
                 int ress = input.nextInt();
                 input.nextLine();
 
                 switch (ress) {
                     case 1:
-                        for (User user : carteira) {
-                            if (user.getId() == this.id) {
-                                if (user instanceof Carteira) {
-                                    Carteira carteiraUsuario = (Carteira) user;
-                                    double saldoDisponivel = carteiraUsuario.getSaldoDebito();
-                                    double saldoCreditoUtilizado = carteiraUsuario.getSaldoCredito();
-
-                                    if (saldoDisponivel >= valorConta) {
-                                        carteiraUsuario.setSaldoDebito(saldoDisponivel - valorConta);
-                                        System.out.println("Pagamento efetuado com sucesso via débito.");
-                                    } else {
-                                        double restante = valorConta - saldoDisponivel;
-                                        carteiraUsuario.setSaldoDebito(0);
-                                        if (saldoCreditoUtilizado >= restante) {
-                                            carteiraUsuario.setSaldoCredito(saldoCreditoUtilizado - restante);
-                                            System.out.println("Pagamento efetuado com sucesso utilizando crédito.");
-                                        } else {
-                                            System.out.println("Saldo insuficiente para pagar esta conta.");
-                                        }
-                                    }
-                                }
-                            }
+                        if (control.getCarteiras().get(this.id - 1).getSaldoDebito() - valor <= 0) {
+                            System.out.println("Você não tem Debito o suficiente para realizar esta operação");
+                        } else {
+                            control.getCarteiras().get(this.id - 1).addToSaldoCredito(valor);
+                            control.getCarteiras().get(this.id - 1).addToLimiteCredito(valor);
+                            control.getCarteiras().get(escolhaConta - 1).subToSaldoDebito(valor);
+                            transacao.setMessage("Você "+ control.getCarteiras().get(this.id - 1).getName() +" efetuou um pagamento para suas pêndencias de créditos de $" + valor + ", seu novo limite de crédito é de " + control.getCarteiras().get(this.id - 1).getLimiteCredito());
                         }
                         break;
                     case 2:
-                        for (User user : carteira) {
-                            if (user.getId() == this.id) {
-                                if (user instanceof Carteira) {
-                                    Carteira carteiraUsuario = (Carteira) user;
-                                    double saldoCreditoUtilizado = carteiraUsuario.getSaldoCredito();
-
-                                    if (saldoCreditoUtilizado >= valorConta) {
-                                        carteiraUsuario.setSaldoCredito(saldoCreditoUtilizado - valorConta);
-                                        System.out.println("Pagamento efetuado com sucesso utilizando crédito.");
-                                    } else {
-                                        System.out.println("Saldo insuficiente para pagar esta conta.");
-                                    }
-                                }
-                            }
-                        }
+                        opcoesCarteira(this.id);
                         break;
                     default:
+                        System.out.println("This option is not available");
+                        opcoesCarteira(this.id);
+                        break;
                 }
+            } else {
+                System.out.println(" Não dividas pendentes em relação a você mesmo");
+            }
+
         }
+        
+        control.getCarteiras().get(this.id - 1).getTransacoes().add(transacao);
+        opcoesCarteira(this.id);
     }
+
+    public void verHistorico(){
+        utilities.limparConsole();
+        System.out.println(control.getCarteiras().get(this.id - 1).listTransacoes());
+        System.out.println("------------------------------------");
+        utilities.pressionarEnter();
+        opcoesCarteira(this.id);
+    }
+
+    public void CriptoBank(){}
 }

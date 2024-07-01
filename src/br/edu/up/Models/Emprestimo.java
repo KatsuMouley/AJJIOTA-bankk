@@ -1,6 +1,6 @@
 package br.edu.up.Models;
 
-public class Emprestimo extends User {
+public class Emprestimo {
 
     private double saldoEmprestimo = 0.0; // saldo atual do emprestimo
     private double limiteEmprestimo = 500.0; // Limite mínimo de empréstimo (pode ser ajustado)
@@ -8,8 +8,7 @@ public class Emprestimo extends User {
     private int prazoEmprestimo = 0; // Prazo do empréstimo (em períodos)
 
     //Construtor com informações básicas do usuário
-    public Emprestimo(int id, String name, String cpf) {
-        super(id, name, cpf);
+    public Emprestimo() {
     }
 
     // Getter e setter para saldo de empréstimo

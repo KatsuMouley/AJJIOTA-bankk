@@ -5,6 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "java",
+            "name": "Programa",
+            "request": "launch",
+            "mainClass": "Programa",
+            "projectName": "AJJIOTA-bankk_5d42a753"
+        },
+        {
             "type": "jdk",
             "request": "launch",
             "name": "Launch Java App"
